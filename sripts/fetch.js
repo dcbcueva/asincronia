@@ -1,3 +1,5 @@
+// const { default: axios } = require("axios");
+
 // API to obtain data 
 const api = 'https://reqres.in/api/users?delay=2'
 
@@ -11,7 +13,9 @@ function btn() {
         </div>`
 }
 
-// Spiner function to change the button and show that data is being loading 
+/**
+ * Spiner function to change the button and show that data is being loading 
+ */ 
 function spiner() {
     const container = document.getElementById("contBtn");
     //const user = JSON.parse(localStorage.getItem("users"));
@@ -33,7 +37,8 @@ function readUser() {
     const user = JSON.parse(localStorage.getItem("userData"));
     user && user.time > Date.now() ?
         displayUsers(user.usersData) :
-        fetchRequest();
+        //fetchRequest();
+        axiosReques();
 }
 
 // Fetch function to obtain data from API 
@@ -55,7 +60,30 @@ function fetchRequest() {
     // setTimeout(() => btn(), 2400);
 }
 
-// Saving data function to save data to local storage 
+function axiosReques(){
+    spiner(); // aparece la imagen de spiner para la espera.
+    axios({
+        method: 'get',
+        url: api
+      })
+        .then(function (response) {
+            console.log (response);
+            console.log("status code: "+ response.status)
+            usersToLocalStorage(response.data.data);
+            displayUsers(response.data.data);
+        })
+        .catch(error => {
+            console.log(err);
+        })
+        .finally(()=>{
+            btn();
+        }); 
+}
+
+/**
+ * Saving data function to save data to local storage 
+ * @param {obj} data users
+ */  
 function usersToLocalStorage(data) {
     const users = {
         usersData: [...data],
@@ -64,7 +92,9 @@ function usersToLocalStorage(data) {
     localStorage.setItem("userData", JSON.stringify(users)); //To convert object to JSON: JSON.stringify(object)
 }
 
-// display constant to display each user
+/**
+ * display constant to display each user
+ */ 
 const displayUser = ({ avatar, id, email, first_name, last_name }) => {
     return `<div class="container overflow-hidden text-center my-3">
                 <div class="row">
@@ -95,7 +125,9 @@ const displayUser = ({ avatar, id, email, first_name, last_name }) => {
             </div>`
 }
 
-// Display function to print all users info 
+/**
+ * Display function to print all users info 
+ */ 
 function displayUsers(data) {
     const container = document.getElementById("contUser")
     data.forEach(user => container.innerHTML += displayUser(user));
