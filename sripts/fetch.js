@@ -134,6 +134,6 @@ const displayUser = ({ avatar, id, email, first_name, last_name }) => {
  */
 function displayUsers(data) {
     const container = document.getElementById("contUser");
-    container.innerHTML = "";
+    container.innerHTML = ""; //Clean DOM
     data.forEach(user => container.innerHTML += displayUser(user));
 }
