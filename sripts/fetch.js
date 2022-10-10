@@ -1,4 +1,3 @@
-// API to obtain data 
 const api = 'https://reqres.in/api/users?delay=2'
 
 function btn() {
@@ -45,7 +44,33 @@ function fetchRequest() {
             usersToLocalStorage(users.data);
             displayUsers(users.data);
         })
-    setTimeout(() => btn(), 2400);
+        .catch (()=>{
+            console.log(error);
+        })
+        .finally(() => {
+        btn();
+        });
+    //setTimeout(() => btn(), 2400);
+}
+
+function axiosRequest(){
+    spiner();//Aparece la imagen de spiner para la espera
+    axios({
+        method: 'get',
+        url: api
+      })
+        .then(function (response) {
+          console.log(response);
+          usersToLocalStorage(response.data);
+          displayUsers(response.data);
+        })
+        .catch (()=>{
+            console.log(error);
+        })
+        .finally(() => {
+        btn();//aparece el boton
+        });
+
 }
 
 // Saving data function to save data to local storage 
