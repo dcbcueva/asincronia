@@ -1,4 +1,4 @@
-const { default: axios } = require("axios");
+//const { default: axios } = require("axios");
 /**
  * API to obtain data 
  */
@@ -132,6 +132,7 @@ const displayUser = ({ avatar, id, email, first_name, last_name }) => {
  * @param {obj} data 
  */
 function displayUsers(data) {
-    const container = document.getElementById("contUser")
+    const container = document.getElementById("contUser");
+    container.innerHTML = "";
     data.forEach(user => container.innerHTML += displayUser(user));
 }
