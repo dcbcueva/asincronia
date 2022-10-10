@@ -37,7 +37,8 @@ function readUser() {
     const user = JSON.parse(localStorage.getItem("userData"));
     user && user.time > Date.now() ?
         displayUsers(user.usersData) :
-        fetchRequest();
+        //fetchRequest();
+        axiosRequest();
 }
 /**
  * Fetch function to obtain data from API
@@ -70,8 +71,8 @@ function axiosRequest(){
       })
         .then(function (response) {
             console.log(response);
-            usersToLocalStorage(response.data);
-            displayUsers(response.data);
+            usersToLocalStorage(response.data.data);
+            displayUsers(response.data.data);
         })
         .catch(error => {
             console.log(error);
