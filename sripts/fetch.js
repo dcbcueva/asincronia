@@ -1,6 +1,12 @@
-// API to obtain data 
+const { default: axios } = require("axios");
+/**
+ * API to obtain data 
+ */
 const api = 'https://reqres.in/api/users?delay=2'
 
+/**
+ * Button function to change button from spiner to original
+ */
 function btn() {
     const container = document.getElementById("contBtn")
     container.innerHTML =
@@ -10,13 +16,11 @@ function btn() {
             </div>
         </div>`
 }
-
-// Spiner function to change the button and show that data is being loading 
+/**
+ * Spiner function to change the button and show that data is being loading 
+ */
 function spiner() {
     const container = document.getElementById("contBtn");
-    //const user = JSON.parse(localStorage.getItem("users"));
-    //user && user.time > Date.now() ?
-        //btn():
         container.innerHTML =
             `<div class="row my-4 justify-content-evenly mx-auto">
                 <div class="col-md-3">
@@ -25,18 +29,19 @@ function spiner() {
                     Cargando...
                 </div>
             </div>`
-        //setTimeout(() => btn(), 2300);
 }
-
-// Reading data function to read either from local data or API 
+/**
+ * Reading data function to read either from local data or API 
+ */
 function readUser() {
     const user = JSON.parse(localStorage.getItem("userData"));
     user && user.time > Date.now() ?
         displayUsers(user.usersData) :
         fetchRequest();
 }
-
-// Fetch function to obtain data from API 
+/**
+ * Fetch function to obtain data from API
+ */
 function fetchRequest() {
     spiner();
     fetch(api)
@@ -48,10 +53,38 @@ function fetchRequest() {
         .catch(error => {
             console.log(error);
         })
-    setTimeout(() => btn(), 2400);
+        // Runs all instruccions at the end of fetch instruccion
+        .finally(()=> {
+            btn()
+        });
+    //setTimeout(() => btn(), 2400);
 }
-
-// Saving data function to save data to local storage 
+/**
+ * Axios function to obtain data from API
+ */
+function axiosRequest(){
+    spiner();
+    axios({
+        method: 'get',
+        url: api
+      })
+        .then(function (response) {
+            console.log(response);
+            usersToLocalStorage(response.data);
+            displayUsers(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+        // Runs all instruccions at the end of fetch instruccion
+        .finally(()=> {
+            btn()
+        });
+}
+/**
+ * Saving data function to save data to local storage 
+ * @param {object} data 
+ */
 function usersToLocalStorage(data) {
     const users = {
         usersData: [...data],
@@ -59,8 +92,12 @@ function usersToLocalStorage(data) {
     }
     localStorage.setItem("userData", JSON.stringify(users)); //To convert object to JSON: JSON.stringify(object)
 }
-
-// display constant to display each user
+/**
+ * display constant to display each user
+ * @param {avatar, id, email, first_name, last_name} param0 
+ * @returns container whit formated data
+ */
+// 
 const displayUser = ({ avatar, id, email, first_name, last_name }) => {
     return `<div class="container overflow-hidden text-center my-3">
                 <div class="row">
@@ -90,8 +127,10 @@ const displayUser = ({ avatar, id, email, first_name, last_name }) => {
                 </div>
             </div>`
 }
-
-// Display function to print all users info 
+/**
+ * Display function to print all users info 
+ * @param {obj} data 
+ */
 function displayUsers(data) {
     const container = document.getElementById("contUser")
     data.forEach(user => container.innerHTML += displayUser(user));
