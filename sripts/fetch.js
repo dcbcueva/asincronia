@@ -2,7 +2,8 @@
 /**
  * API to obtain data 
  */
-const api = 'https://reqres.in/api/users?delay=2'
+//const api = 'https://reqres.in/api/users?delay=2';
+const api = 'http://localhost:8080/demo/all'
 
 /**
  * Button function to change button from spiner to original
@@ -71,8 +72,8 @@ function axiosRequest(){
       })
         .then(function (response) {
             console.log(response);
-            usersToLocalStorage(response.data.data);
-            displayUsers(response.data.data);
+            usersToLocalStorage(response.data);
+            displayUsers(response.data);
         })
         .catch(error => {
             console.log(error);
