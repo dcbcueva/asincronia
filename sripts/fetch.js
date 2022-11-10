@@ -2,7 +2,8 @@
 /**
  * API to obtain data 
  */
-const api = 'https://reqres.in/api/users?delay=2'
+//const api = 'https://reqres.in/api/users?delay=2';
+const api = 'http://localhost:8080/demo/all'
 
 /**
  * Button function to change button from spiner to original
@@ -37,7 +38,8 @@ function readUser() {
     const user = JSON.parse(localStorage.getItem("userData"));
     user && user.time > Date.now() ?
         displayUsers(user.usersData) :
-        fetchRequest();
+        //fetchRequest();
+        axiosRequest();
 }
 /**
  * Fetch function to obtain data from API
@@ -133,6 +135,6 @@ const displayUser = ({ avatar, id, email, first_name, last_name }) => {
  */
 function displayUsers(data) {
     const container = document.getElementById("contUser");
-    container.innerHTML = "";
+    container.innerHTML = ""; //Clean DOM
     data.forEach(user => container.innerHTML += displayUser(user));
 }
